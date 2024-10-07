@@ -1,0 +1,191 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create a EC2 in two avaliabilityZones
+Parameters:
+  VPCName:
+    Type: String
+    Description: Name of the VPC
+  VpcCIDR:
+    Type: String
+    Default: '10.0.0.0/16'
+    Description: CIDR block for VPC
+  Subnet1CIDR:
+   Type: String
+   Default: '10.0.1.0/24'
+   Description: CIDR block for subnet1
+  Subnet2CIDR:
+    Type: String
+    Default: '10.0.2.0/24'
+    Description: Cidr block for subnet2
+  InstanceType:
+    Type: String
+    Default: t2.micro
+    Description: ec2 InstanceType
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - tst
+      - prod
+    Description: Environment to launch the resources
+  GitCommitID:
+    Type: String
+    Default: sat
+    Description: Git commit id for tracking
+  AppVersion:
+    Type: String
+    Default: 1.1.0
+    Description: Application version of the template
+  AMIId: 
+    Type: String
+    Description: Ami id for the InstanceType
+    Default: ami-0866a3c8686eaeeba
+Mappings:
+  EnvAMIMap:
+    dev: 
+      AMI: ami-0866a3c8686eaeeba
+    tst:
+      AMI: ami-0866a3c8686eaeeba
+    prod:
+      AMI: ami-0866a3c8686eaeeba
+Resources: 
+  MyVPC: 
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCIDR
+      Tags:
+        - Key: Name
+          Value: !Ref VPCName
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: GitCommitID
+          Value: !Ref GitCommitID
+        - Key: AppVersion
+          Value: !Ref AppVersion
+  Subnet1:
+    Type: AWS::EC2::Subnet 
+    Properties:
+      CidrBlock: !Ref Subnet1CIDR
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-${Environment}-subnet1"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: GitCommitID
+          Value: !Ref GitCommitID
+        - Key: AppVersion
+          Value: !Ref AppVersion
+  Subnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: !Ref Subnet2CIDR
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-${Environment}-subnet2"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: GitCommitID
+          Value: !Ref GitCommitID
+        - Key: AppVersion
+          Value: !Ref AppVersion
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: SecurityGroup for ec2 InstanceType
+      VpcId: !Ref MyVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0 
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-${Environment}-SecurityGroup"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: GitCommitID
+          Value: !Ref GitCommitID
+        - Key: AppVersion
+          Value: !Ref AppVersion
+  MyEC2Instance1:
+    Type: AWS::EC2::Instance 
+    Properties:
+      InstanceType: !Ref InstanceType
+      SubnetId: !Ref Subnet1
+      ImageId: !FindInMap [ EnvAMIMap, !Ref Environment, AMI ]
+      SecurityGroupIds:
+        - !Ref SecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-${Environment}-Instance1"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: GitCommitID
+          Value: !Ref GitCommitID
+        - Key: AppVersion
+          Value: !Ref AppVersion
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          apt update -y
+          apt install -y git httpd docker.io
+          systemctl enable docker
+          systemctl start docker
+          sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \ https://pkg.jenkins.io/debian/jenkins.io-2023.key
+          echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \ https://pkg.jenkins.io/debian binary/ | sudo tee \ /etc/apt/sources.list.d/jenkins.list > /dev/null
+          sudo apt-get update
+          sudo apt-get install jenkins
+          sudo apt update
+          sudo apt install fontconfig openjdk-17-jre
+          
+  MyEC2Instance2:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref InstanceType
+      SubnetId: !Ref Subnet2
+      ImageId: !FindInMap [ EnvAMIMap, !Ref Environment, AMI ]
+      SecurityGroupIds:
+        - !Ref SecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-${Environment}-Instance2"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: GitCommitID
+          Value: !Ref GitCommitID
+        - Key: AppVersion
+          Value: !Ref AppVersion
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          apt update -y
+          apt install -y git httpd docker.io
+          systemctl enable docker
+          systemctl start docker
+          sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \ https://pkg.jenkins.io/debian/jenkins.io-2023.key
+          echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \ https://pkg.jenkins.io/debian binary/ | sudo tee \ /etc/apt/sources.list.d/jenkins.list > /dev/null
+          sudo apt-get update
+          sudo apt-get install jenkins
+          sudo apt update
+          sudo apt install fontconfig openjdk-17-jre
+Outputs:
+  VpcId: 
+    Description: The VpcId
+    Value: !Ref MyVPC
+  Instance1Id:
+    Description: The Id of the first EC2 Instance
+    Value: !Ref MyEC2Instance1
+  Instance2Id:
+    Description: The Id of the second EC2 Instance
+    Value: !Ref MyEC2Instance2
+     
