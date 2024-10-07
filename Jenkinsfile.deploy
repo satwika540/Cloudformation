@@ -1,0 +1,47 @@
+pipeline {
+  agent any
+  environment {
+      AWS_REGION = 'us-east-1'
+  }
+  parameters {
+    choice(name: 'Environment', choices: ['dev', 'tst', 'prod'], description:'Select environment')
+    string(name: 'GitCommitID', defaultValue: '', description: 'Git commit id')
+    string(name: 'AppVersion', defaultValue:'1.0.0', description: 'App Version')
+    string(name: 'VpcCIDR', defaultValue: '10.0.0.0/16', description: 'VPC CIDR Block')
+    string(name: 'Subnet1CIDR', defaultValue: '10.0.1.0/24', description: 'subnet1 cidr')
+    string(name: 'Subnet2CIDR', defaultValue: '10.0.2.0/24', description: 'subnet2 cidr')
+    string(name: 'InstanceType', defaultValue: 't2.micro', description: 'type of instance')
+    string(name: 'AMIID', defaultValue: 'ami-0866a3c8686eaeeba', description: 'amiid')
+    string(name: 'VPCName', defaultValue: 'my-vpc', description: 'vpcname')
+ }
+ stages {
+    stage('Checkout Code') {
+      steps {
+        checkout scmGIT(branches: [[name:'*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'git-credentials', url: 'https://github.com/satwika540/Cloudformation.git']])
+     }
+    }
+    stage('Deploy') {
+      steps {
+        echo "deploying"
+        cloudFormationUpdate(
+            stackName: "MyApp-stack-${params.Environment}-1",
+            pathToTemplate: 'MyAWSStack.yaml',
+            awsRegion: "${env.AWS_REGION}",
+            parameters: [
+                 ["ParameterKey": AppVersion, "ParameterValue": params.AppVersion],
+                 ["ParameterKey": GitCommitId, "ParameterValue": params.GitCommitId],
+                 ["ParameterKey": VpcCIDR, "ParameterValue": params.VpcCIDR],
+                 ["ParameterKey": Subnet1CIDR, "ParameterValue": params.Subnet1CIDR],
+                 ["ParameterKey": Subnet2CIDR, "ParameterValue": params.Subnet2CIDR],
+                 ["ParameterKey": InstanceType, "ParameterValue": params.InstanceType],
+                 ["ParameterKey": AMIId, "ParameterValue": params.AMIId],
+                 ["ParameterKey": VPCName, "ParameterValue": params.VPCName],
+                 ["ParameterKey": Environment, "ParameterValue": params.Environment]
+            ]
+            credentialsId: "aws-${params.Environment}-credentials",
+            pollInterval: 1000
+        )
+      }
+    }
+  }
+}
