@@ -51,7 +51,7 @@ pipeline {
              parameters: [
                  ["ParameterKey": AppVersion, "ParameterValue": params.AppVersion],
                  ["ParameterKey": GitCommitId, "ParameterValue": params.GitCommitId]
-             ]
+             ],
              credentialsId: "aws-${params.Environment}-credentials",
              validateOnly: true
          )
