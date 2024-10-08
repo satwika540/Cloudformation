@@ -6,7 +6,7 @@ pipeline {
   parameters {
     choice(name: 'Environment', choices: ['dev', 'tst', 'prod'], description:'Select environment')
     string(name: 'GitCommitID', defaultValue: '', description: 'Git commit id')
-    string(name: 'AppVersion', defaultValue:'1.0.0', description: 'App Version')
+    string(name: 'Appversion', defaultValue:'1.0.0', description: 'App Version')
     string(name: 'VpcCIDR', defaultValue: '10.0.0.0/16', description: 'VPC CIDR Block')
     string(name: 'Subnet1CIDR', defaultValue: '10.0.1.0/24', description: 'subnet1 cidr')
     string(name: 'Subnet2CIDR', defaultValue: '10.0.2.0/24', description: 'subnet2 cidr')
@@ -44,7 +44,7 @@ pipeline {
              pathToTemplate: 'MyAWSStack.yaml',
              awsRegion: "${env.AWS_REGION}",
              parameters: [
-                 ["ParameterKey": AppVersion, "ParameterValue": params.AppVersion],
+                 ["ParameterKey": AppVersion, "ParameterValue": params.Appversion],
                  ["ParameterKey": GitCommitId, "ParameterValue": params.GitCommitId]
              ],
              credentialsId: "aws-${params.Environment}-credentials",
