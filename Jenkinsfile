@@ -15,11 +15,6 @@ pipeline {
     string(name: 'VPCName', defaultValue: 'my-vpc', description: 'vpcname')
  }
  stages {
-    stage('Checkout Code') {
-      steps {
-        checkout scm
-     }
-    }
     stage('Check app version') {
        steps {
           script {
