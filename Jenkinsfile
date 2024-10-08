@@ -17,7 +17,7 @@ pipeline {
  stages {
     stage('Checkout Code') {
       steps {
-        checkout scmGIT(branches: [[name:'*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'git-credentials', url: 'https://github.com/satwika540/Cloudformation.git']])
+        checkout scm
      }
     }
     stage('Check app version') {
