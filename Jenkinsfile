@@ -70,12 +70,12 @@ pipeline {
           build job: 'deploy-pipeline', wait: false, parameters: [
               string(name: 'AppVersion', value: params.AppVersion),
               string(name: 'GitCommitId', value: params.GitCommitId),
-              string(name: 'Environment', value: params.ENV)
-              string(name: 'VpcCIDR',  value: params.vpcCIDR)
-    	      string(name: 'Subnet1CIDR', value: params.Subnet1CIDR)
-              string(name: 'Subnet2CIDR', value: params.Subnet2CIDR)
-              string(name: 'InstanceType',value: params.InstanceType)
-              string(name: 'AMIID', value: params.AMIID)
+              string(name: 'Environment', value: params.ENV),
+              string(name: 'VpcCIDR',  value: params.vpcCIDR),
+    	        string(name: 'Subnet1CIDR', value: params.Subnet1CIDR),
+              string(name: 'Subnet2CIDR', value: params.Subnet2CIDR),
+              string(name: 'InstanceType',value: params.InstanceType),
+              string(name: 'AMIID', value: params.AMIID),
               string(name: 'VPCName', value: params.VPCName)
          ]
        }
