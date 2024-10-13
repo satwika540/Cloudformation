@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+    
+    stages {
+       stage('Deploy cloudformation stack') {
+           steps {
+               script {
+                     echo "Deploying cloud formation stack to ${params.TARGET_ENV} environment"
+                     withAWS(credentials: "aws-${params.TARGET_ENV}-credentials") {
+                         cfnUpdate(
+                            stack: "MyStack-${params.TARGET_ENV}",
+                            file: "MyAWSStack.yaml",
+                            params: """
+                                VpcCIDR=${params.VpcCIDR}
+                                Subnet1CIDR=${params.Subnet1CIDR}
+                                Subnet2CIDR=${params.Subnet2CIDR}
+                                InstanceType=${params.InstanceType}
+                                Environment=${params.TARGET_ENV}
+                                GitCommitUser=${params.COMMIT_AUTHOR}
+                                GitCommitID=${params.COMMIT_ID}
+                                GitTag=${params.COMMIT_TAG}
+                                AMIId=${params.AMIId}
+                            """ ,
+                            timeouInMinutes: 15
+                         )
+                     }
+                }
+           }
+       }
+       stage('Post-deployment') {
+          steps { 
+               echo "Deployment finished for commit ${params.COMMIT_ID} by ${params.COMMIT_AUTHOR} to ${params.TARGET_ENV} environment."
+          }
+       }
+   }
+}

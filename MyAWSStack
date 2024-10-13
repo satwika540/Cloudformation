@@ -1,9 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: Create a EC2 in two avaliabilityZones
 Parameters:
-  VPCName:
-    Type: String
-    Description: Name of the VPC
   VpcCIDR:
     Type: String
     Default: '10.0.0.0/16'
@@ -30,12 +27,12 @@ Parameters:
     Description: Environment to launch the resources
   GitCommitID:
     Type: String
-    Default: sat
     Description: Git commit id for tracking
-  AppVersion:
+  GitCommitUser:
     Type: String
-    Default: 1.1.0
-    Description: Application version of the template
+    Description: Git user for tracking
+  GitTag:
+    Type: String
   AMIId: 
     Type: String
     Description: Ami id for the InstanceType
@@ -60,8 +57,10 @@ Resources:
           Value: !Ref Environment
         - Key: GitCommitID
           Value: !Ref GitCommitID
-        - Key: AppVersion
-          Value: !Ref AppVersion
+        - Key: GitCommitUser
+          Value: !Ref GitCommitUser
+        - Key: GitTag
+          Value: !Ref GitTag
   Subnet1:
     Type: AWS::EC2::Subnet 
     Properties:
@@ -74,8 +73,10 @@ Resources:
           Value: !Ref Environment
         - Key: GitCommitID
           Value: !Ref GitCommitID
-        - Key: AppVersion
-          Value: !Ref AppVersion
+        - Key: GitCommitUser
+          Value: !Ref GitCommitUser
+        - Key: GitTag
+          Value: !Ref GitTag
   Subnet2:
     Type: AWS::EC2::Subnet
     Properties:
@@ -88,8 +89,10 @@ Resources:
           Value: !Ref Environment
         - Key: GitCommitID
           Value: !Ref GitCommitID
-        - Key: AppVersion
-          Value: !Ref AppVersion
+        - Key: GitCommitUser
+          Value: !Ref GitCommitUser
+        - Key: GitTag
+          Value: !Ref GitTag
   SecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -115,8 +118,10 @@ Resources:
           Value: !Ref Environment
         - Key: GitCommitID
           Value: !Ref GitCommitID
-        - Key: AppVersion
-          Value: !Ref AppVersion
+        - Key: GitCommitUser
+          Value: !Ref GitCommitUser
+        - Key: GitTag
+          Value: !Ref GitTag
   MyEC2Instance1:
     Type: AWS::EC2::Instance 
     Properties:
@@ -132,8 +137,10 @@ Resources:
           Value: !Ref Environment
         - Key: GitCommitID
           Value: !Ref GitCommitID
-        - Key: AppVersion
-          Value: !Ref AppVersion
+        - Key: GitCommitUser
+          Value: !Ref GitCommitUser
+        - Key: GitTag
+          Value: !Ref GitTag
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
@@ -163,8 +170,10 @@ Resources:
           Value: !Ref Environment
         - Key: GitCommitID
           Value: !Ref GitCommitID
-        - Key: AppVersion
-          Value: !Ref AppVersion
+        - Key: GitCommitUser
+          Value: !Ref GitCommitUser
+        - Key: GitTag
+          Value: !Ref GitTag
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
