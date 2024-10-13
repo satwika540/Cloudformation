@@ -8,7 +8,7 @@ pipeline {
                      echo "Deploying cloud formation stack to ${params.TARGET_ENV} environment"
                      withAWS(credentials: "aws-dev-credentials") {
                          cfnUpdate(
-                            stack: "MyStack-${params.TARGET_ENV}",
+                            stack: "MyStack",
                             file: "MyAWSStack",
                             params: """
                                 VpcCIDR=${params.VpcCIDR}
