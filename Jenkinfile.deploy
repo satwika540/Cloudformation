@@ -18,7 +18,6 @@ pipeline {
                                 Environment=${params.TARGET_ENV}
                                 GitCommitUser=${params.COMMIT_AUTHOR}
                                 GitCommitID=${params.COMMIT_ID}
-                                GitTag=${params.COMMIT_TAG}
                                 AMIId=${params.AMIId}
                             """ ,
                             timeouInMinutes: 15
