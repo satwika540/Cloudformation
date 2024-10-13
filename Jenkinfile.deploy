@@ -20,7 +20,7 @@ pipeline {
                                 GitCommitID=${params.COMMIT_ID}
                                 AMIId=${params.AMIId}
                             """ ,
-                            timeouInMinutes: 15
+                            timeoutInMinutes: 15
                          )
                      }
                 }
