@@ -50,7 +50,7 @@ Resources:
       CidrBlock: !Ref VpcCIDR
       Tags:
         - Key: Name
-          Value: !Ref VPCName
+          Value: MyVPC
         - Key: Environment
           Value: !Ref Environment
         - Key: GitCommitID
