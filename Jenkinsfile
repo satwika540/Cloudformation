@@ -45,7 +45,7 @@ pipeline {
                   echo "Validating cloudformation template for ${env.TARGET_ENV} environment..."
                   withAWS(credentials: "aws-dev-credentials") {
                       cfnValidate(
-                          file: 'MyAWSStack.yaml'
+                          file: 'MyAWSStack'
                       )
                   }
               }
