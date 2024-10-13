@@ -42,7 +42,7 @@ pipeline {
        stage ('Validate Cloudformation Template') {
           steps {
               script {
-                  echo "Validating cloudformation template for ${TARGET_ENV} environment..."
+                  echo "Validating cloudformation template for ${env.TARGET_ENV} environment..."
                   withAWS(credentials: "aws-${env.TARGET_ENV}-credentials") {
                       cfnValidate(
                           file: 'MyAWSStack.yaml'
