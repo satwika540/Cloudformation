@@ -6,7 +6,7 @@ pipeline {
            steps {
                script {
                      echo "Deploying cloud formation stack to ${params.TARGET_ENV} environment"
-                     withAWS(credentials: "aws-${params.TARGET_ENV}-credentials") {
+                     withAWS(credentials: "aws-dev-credentials") {
                          cfnUpdate(
                             stack: "MyStack-${params.TARGET_ENV}",
                             file: "MyAWSStack.yaml",
