@@ -70,7 +70,6 @@ pipeline {
                        string(name: 'TARGET_ENV', value: env.TARGET_ENV),
                        string(name: 'COMMIT_AUTHOR', value: env.COMMIT_AUTHOR),
                        string(name: 'COMMIT_ID', value: env.COMMIT_ID),
-                       string(name: 'COMMIT_TAG', value: env.COMMIT_TAG),
                        string(name: 'AMIId', Value: params.AMIId)
                    ]
                }
