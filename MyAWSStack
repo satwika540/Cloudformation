@@ -31,8 +31,6 @@ Parameters:
   GitCommitUser:
     Type: String
     Description: Git user for tracking
-  GitTag:
-    Type: String
   AMIId: 
     Type: String
     Description: Ami id for the InstanceType
@@ -59,8 +57,6 @@ Resources:
           Value: !Ref GitCommitID
         - Key: GitCommitUser
           Value: !Ref GitCommitUser
-        - Key: GitTag
-          Value: !Ref GitTag
   Subnet1:
     Type: AWS::EC2::Subnet 
     Properties:
@@ -75,8 +71,6 @@ Resources:
           Value: !Ref GitCommitID
         - Key: GitCommitUser
           Value: !Ref GitCommitUser
-        - Key: GitTag
-          Value: !Ref GitTag
   Subnet2:
     Type: AWS::EC2::Subnet
     Properties:
@@ -91,8 +85,6 @@ Resources:
           Value: !Ref GitCommitID
         - Key: GitCommitUser
           Value: !Ref GitCommitUser
-        - Key: GitTag
-          Value: !Ref GitTag
   SecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -120,8 +112,6 @@ Resources:
           Value: !Ref GitCommitID
         - Key: GitCommitUser
           Value: !Ref GitCommitUser
-        - Key: GitTag
-          Value: !Ref GitTag
   MyEC2Instance1:
     Type: AWS::EC2::Instance 
     Properties:
@@ -139,8 +129,6 @@ Resources:
           Value: !Ref GitCommitID
         - Key: GitCommitUser
           Value: !Ref GitCommitUser
-        - Key: GitTag
-          Value: !Ref GitTag
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
@@ -172,8 +160,6 @@ Resources:
           Value: !Ref GitCommitID
         - Key: GitCommitUser
           Value: !Ref GitCommitUser
-        - Key: GitTag
-          Value: !Ref GitTag
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
