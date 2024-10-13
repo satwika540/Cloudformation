@@ -9,7 +9,7 @@ pipeline {
                      withAWS(credentials: "aws-dev-credentials") {
                          cfnUpdate(
                             stack: "MyStack-${params.TARGET_ENV}",
-                            file: "MyAWSStack.yaml",
+                            file: "MyAWSStack",
                             params: """
                                 VpcCIDR=${params.VpcCIDR}
                                 Subnet1CIDR=${params.Subnet1CIDR}
