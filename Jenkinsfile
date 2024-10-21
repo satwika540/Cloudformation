@@ -4,7 +4,7 @@ pipeline {
       COMMIT_AUTHOR = ''
       COMMIT_ID = ''
       COMMIT_TAG = ''
-      TARGET_ENV = 'dev'
+      TARGET_ENV = ''
     }
     parameters {
         string(name: 'VpcCIDR', defaultValue: '10.0.0.0/16', description: 'CIDR OF VPC')
@@ -24,11 +24,11 @@ pipeline {
                   } else if (branch == 'tst') {
                       env.TARGET_ENV = 'tst'
                   } else if (branch == 'prod') {
-                      env.TARGET_ENV = prod
+                      env.TARGET_ENV = 'prod'
                   } else {
                       error("Unknown branch name: ${branch}")
                   }
-                  echo "Target env is ${env.BRANCH_NAME} in ${params.VpcCIDR}"
+                  echo "Target env is ${env.BRANCH_NAME} in ${params.VpcCIDR} in ${env.TARGET_ENV}"
               }
           }
        }        
