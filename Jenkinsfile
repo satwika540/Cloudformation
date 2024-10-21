@@ -28,7 +28,6 @@ pipeline {
                   } else {
                       error("Unknown branch name: ${branch}")
                   }
-
                   echo "Target env is ${TARGET_ENV} and branch is ${branch}"
               }
           }
