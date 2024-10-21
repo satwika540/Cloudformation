@@ -13,7 +13,7 @@ pipeline {
         string(name: 'InstanceType', defaultValue: 't2.micro', description: 'Instance type of EC2')
         string(name: 'AMIId', defaultValue: 'ami-0866a3c8686eaeeba', description: 'Ami required to launch the instance')
     }
-       
+
     stages {
        stage ('Determine Environment') {
           steps {
@@ -28,7 +28,7 @@ pipeline {
                   } else {
                       error("Unknown branch name: ${branch}")
                   }
-                  echo "Target env is ${TARGET_ENV} and branch is ${branch}"
+                  echo "Target env is ${env.TARGET_ENV}"
               }
           }
        }        
