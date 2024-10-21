@@ -28,7 +28,7 @@ pipeline {
                   } else {
                       error("Unknown branch name: ${branch}")
                   }
-                  echo "Target env is ${env.TARGET_ENV} in ${params.VpcCIDR}"
+                  echo "Target env is ${env.BRANCH_NAME} in ${params.VpcCIDR}"
               }
           }
        }        
