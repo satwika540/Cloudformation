@@ -5,7 +5,7 @@ pipeline {
        stage('Deploy cloudformation stack') {
            steps {
                script {
-                     echo "Deploying cloud formation stack to ${params.TARGET_ENV} environment"
+                     echo "Deploying cloud formation stack to ${params.TARGET_ENV} environment IN ${params.VpcCIDR}"
                      withAWS(credentials: "aws-dev-credentials") {
                          cfnUpdate(
                             stack: "MyStack",
