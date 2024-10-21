@@ -4,7 +4,7 @@ pipeline {
       COMMIT_AUTHOR = ''
       COMMIT_ID = ''
       COMMIT_TAG = ''
-      TARGET_ENV = ''
+      TARGET_ENV = 'dev'
     }
     parameters {
         string(name: 'VpcCIDR', defaultValue: '10.0.0.0/16', description: 'CIDR OF VPC')
