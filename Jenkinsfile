@@ -21,7 +21,6 @@ pipeline {
                   def branch = env.BRANCH_NAME
                   if (branch == 'dev') {
                       env.TARGET_ENV = 'dev'
-                      def ENV = env.TARGET_ENV
                   } else if (branch == 'tst') {
                       env.TARGET_ENV = 'tst'
                   } else if (branch == 'prod') {
@@ -29,7 +28,7 @@ pipeline {
                   } else {
                       error("Unknown branch name: ${branch}")
                   }
-                  echo "Target env is ${ENV}"
+                  echo "Target env is ${env.TARGET_ENV}"
               }
           }
        }        
