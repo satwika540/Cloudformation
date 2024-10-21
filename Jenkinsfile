@@ -35,6 +35,7 @@ pipeline {
        stage ('Get Commit Info') {
           steps {
               script {
+                  echo "Branch is ${branch}"
                   env.COMMIT_AUTHOR = sh(script: 'git log -1 --pretty=format:"%an"', returnStdout: true).trim()
                   env.COMMIT_ID = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
               }
